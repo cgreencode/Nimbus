@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from rest_framework import generics, views, status
 from rest_framework.decorators import api_view
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from nimbus.apps.media.models import Media
@@ -17,9 +18,9 @@ class MultipleFieldLookupMixin(object):
     def get_object(self):
         queryset = self.get_queryset()             # Get the base queryset
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
-       
+
         filter = {}
-        
+
         for field in self.lookup_fields:
             if field in self.request.QUERY_PARAMS:
                 filter[field] = self.request.QUERY_PARAMS[field]
@@ -91,7 +92,8 @@ class AddFile(views.APIView):
             html = render_to_string("nimbus/accounts/media_table_row.html", context)
             data["html"] = html
 
-        return Response(data, status=201)
+        json = JSONRenderer().render(data)
+        return Response(json, status=201)
 
 
 class AddLink(generics.CreateAPIView):
@@ -106,7 +108,6 @@ class AddLink(generics.CreateAPIView):
         if response.status_code == status.HTTP_201_CREATED:
             response.data = ViewLinkSerializer(self.object).data
         return response
-
 
 @api_view(("DELETE",))
 def delete_media(request):
