@@ -4,8 +4,7 @@ from .models import Media
 
 
 class MediaAdmin(admin.ModelAdmin):
-    fields = ("url_hash",
-              "name",
+    fields = ("name",
               "target_url",
               "target_file",
               "user",
