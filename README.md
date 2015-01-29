@@ -319,11 +319,3 @@ Delete one or more media items.
 
 ####Response
 - Status: 204 No Content
-
-***
-
-## Contact
-Ethan Lowman
-- https://github.com/ethanal
-- https://twitter.com/ethanalowman
-- github@ethanlowman.com
