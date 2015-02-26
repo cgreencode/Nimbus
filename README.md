@@ -91,21 +91,11 @@ autorestart = true
 
 ####Example Nginx Configuration
 ```nginx
+client_max_body_size 1024M;
+
 server {
     listen 80;
     server_name example.com account.example.com api.example.com;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl;
-    server_name example.com account.example.com api.example.com;
-
-    ssl on;
-    ssl_certificate /usr/local/certs/example.com.crt;
-    ssl_certificate_key /usr/local/certs/example.com.key;
-
-    client_max_body_size 1024M;
 
     access_log /var/log/sites/nimbus.access.log;
     error_log /var/log/sites/nimbus.error.log;
@@ -124,7 +114,7 @@ server {
         proxy_set_header X-Forwarded-Host $host;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-
+        proxy_set_header X-Forwarded-Protocol $scheme;
     }
 }
 ```
